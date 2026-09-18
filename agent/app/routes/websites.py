@@ -6,7 +6,6 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request, status
 
-from app.security import verify_signed_request
 from app.schemas import (
     CreateWebsiteRequest,
     DeleteWebsiteRequest,
@@ -14,6 +13,7 @@ from app.schemas import (
     PhpReloadRequest,
     SSLIssueRequest,
 )
+from app.security import verify_signed_request
 
 router = APIRouter(prefix="/agent", tags=["agent"])
 

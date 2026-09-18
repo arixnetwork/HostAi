@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import json
 import os
-import secrets
 import time
 from typing import Any
 
@@ -18,8 +18,8 @@ def _canonical_payload(data: bytes) -> bytes:
 
 
 def sign_payload(payload: bytes, timestamp: str, nonce: str, secret: str = _AGENT_SECRET) -> str:
-    mac = hmac.new(secret.encode("utf-8"), payload + b"|" + timestamp.encode("utf-8") + b"|" + nonce.encode("utf-8"), hashlib.sha256)
-    return mac.hexdigest()
+    message = payload + b"|" + timestamp.encode("utf-8") + b"|" + nonce.encode("utf-8")
+    return hmac.new(secret.encode("utf-8"), message, hashlib.sha256).hexdigest()
 
 
 def _is_valid_nonce(nonce: str) -> bool:
