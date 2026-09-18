@@ -1,0 +1,22 @@
+[Unit]
+Description=Rabby Host control panel
+After=network-online.target postgresql.service redis-server.service
+Wants=network-online.target
+
+[Service]
+User=rabby
+Group=rabby
+EnvironmentFile=/etc/rabby-host/rabby-host.env
+WorkingDirectory=/opt/rabby-host
+ExecStart=/usr/bin/npm run start -- --hostname 127.0.0.1 --port 3000
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/rabby-host /var/log/rabby-host
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

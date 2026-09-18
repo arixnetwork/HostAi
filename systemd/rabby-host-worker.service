@@ -1,0 +1,22 @@
+[Unit]
+Description=Rabby Host worker
+After=network-online.target postgresql.service redis-server.service rabby-host-agent.service
+Wants=network-online.target
+
+[Service]
+User=rabby
+Group=rabby
+EnvironmentFile=/etc/rabby-host/rabby-host.env
+WorkingDirectory=/opt/rabby-host
+ExecStart=/usr/bin/node /opt/rabby-host/scripts/worker.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/rabby-host /var/www /var/log/rabby-host
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

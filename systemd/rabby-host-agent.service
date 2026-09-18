@@ -1,0 +1,22 @@
+[Unit]
+Description=Rabby Host agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=rabby-agent
+Group=rabby-agent
+EnvironmentFile=/etc/rabby-host/rabby-host.env
+WorkingDirectory=/opt/rabby-host/agent
+ExecStart=/opt/rabby-host-agent-venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8417
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/etc/nginx /etc/php /var/www /var/log/rabby-host
+CapabilityBoundingSet=CAP_DAC_OVERRIDE CAP_CHOWN CAP_FOWNER
+
+[Install]
+WantedBy=multi-user.target
